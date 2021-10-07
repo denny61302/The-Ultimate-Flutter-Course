@@ -6,11 +6,7 @@ class Genre {
   final bool isSelected;
   final int id;
 
-  const Genre({
-    required this.name,
-    this.isSelected = false,
-    this.id = 0,
-  });
+  const Genre({required this.name, this.id = 0, this.isSelected = false});
 
   Genre toggleSelected() {
     return Genre(
@@ -21,10 +17,10 @@ class Genre {
   }
 
   @override
-  String toString() => 'Genre(name: $name, id: $id, isSelected: $isSelected';
+  String toString() => 'Genre(name: $name, isSelected: $isSelected, id: $id)';
 
   @override
-  bool operator == (Object other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is Genre && other.name == name && other.isSelected == isSelected && other.id == id;
@@ -32,5 +28,4 @@ class Genre {
 
   @override
   int get hashCode => name.hashCode ^ isSelected.hashCode ^ id.hashCode;
-
 }

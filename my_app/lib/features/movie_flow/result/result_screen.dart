@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/core/constants.dart';
-import 'package:my_app/core/widgets/primary_button.dart';
-import 'package:my_app/features/movie_flow/genre/genre.dart';
-import 'package:my_app/features/movie_flow/result/movie.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ResultScreen extends StatelessWidget {
-  static route({bool fullscreenDialog = true}) =>
-      MaterialPageRoute(builder: (context) => const ResultScreen());
+import 'package:movie_recommendation_app_course/core/constants.dart';
+import 'package:movie_recommendation_app_course/core/widgets/primary_button.dart';
+import 'package:movie_recommendation_app_course/features/movie_flow/movie_flow_controller.dart';
+import 'package:movie_recommendation_app_course/features/movie_flow/result/movie.dart';
+
+class ResultScreen extends ConsumerWidget {
+  static route({bool fullscreenDialog = true}) => MaterialPageRoute(
+        builder: (context) => const ResultScreen(),
+        fullscreenDialog: fullscreenDialog,
+      );
   const ResultScreen({Key? key}) : super(key: key);
-
-  final movie = const Movie(
-    title: 'Hulk',
-    overview: 'Bruce',
-    voteAverage: 4.8,
-    genres: [Genre(name: 'Action'), Genre(name: 'Fantasy')],
-    releaseDate: '2019-05-24',
-    backdropPath: '',
-    posterPath: '',
-  );
 
   final double movieHeight = 150;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -38,19 +32,17 @@ class ResultScreen extends StatelessWidget {
                       width: MediaQuery.of(context).size.width,
                       bottom: -(movieHeight / 2),
                       child: MovieImageDetails(
-                        movie: movie,
+                        movie: ref.watch(movieFlowControllerProvider).movie,
                         movieHeight: movieHeight,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: movieHeight / 2,
-                ),
+                SizedBox(height: movieHeight / 2),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
-                    movie.overview,
+                    ref.watch(movieFlowControllerProvider).movie.overview,
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
@@ -61,9 +53,7 @@ class ResultScreen extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
             text: 'Find another movie',
           ),
-          const SizedBox(
-            height: kMediumSpacing,
-          ),
+          const SizedBox(height: kMediumSpacing),
         ],
       ),
     );
@@ -71,7 +61,9 @@ class ResultScreen extends StatelessWidget {
 }
 
 class CoverImage extends StatelessWidget {
-  const CoverImage({Key? key}) : super(key: key);
+  const CoverImage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,12 +72,13 @@ class CoverImage extends StatelessWidget {
       child: ShaderMask(
         shaderCallback: (rect) {
           return LinearGradient(
-              begin: Alignment.center,
-              end: Alignment.bottomCenter,
-              colors: [
-                Theme.of(context).scaffoldBackgroundColor,
-                Colors.transparent,
-              ]).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
+            begin: Alignment.center,
+            end: Alignment.bottomCenter,
+            colors: [
+              Theme.of(context).scaffoldBackgroundColor,
+              Colors.transparent,
+            ],
+          ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
         },
         blendMode: BlendMode.dstIn,
         child: const Placeholder(),
@@ -94,7 +87,7 @@ class CoverImage extends StatelessWidget {
   }
 }
 
-class MovieImageDetails extends StatelessWidget {
+class MovieImageDetails extends ConsumerWidget {
   const MovieImageDetails({
     Key? key,
     required this.movie,
@@ -105,7 +98,7 @@ class MovieImageDetails extends StatelessWidget {
   final double movieHeight;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -116,9 +109,7 @@ class MovieImageDetails extends StatelessWidget {
             height: movieHeight,
             child: const Placeholder(),
           ),
-          const SizedBox(
-            width: kMediumSpacing,
-          ),
+          const SizedBox(width: kMediumSpacing),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,10 +125,9 @@ class MovieImageDetails extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '4.8',
+                      movie.voteAverage.toString(),
                       style: theme.textTheme.bodyText2?.copyWith(
-                        color:
-                            theme.textTheme.bodyText2?.color?.withOpacity(0.62),
+                        color: theme.textTheme.bodyText2?.color?.withOpacity(0.62),
                       ),
                     ),
                     const Icon(
@@ -146,10 +136,10 @@ class MovieImageDetails extends StatelessWidget {
                       color: Colors.amber,
                     ),
                   ],
-                ),
+                )
               ],
             ),
-          ),
+          )
         ],
       ),
     );

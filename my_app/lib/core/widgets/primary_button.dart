@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/core/constants.dart';
+
+import 'package:movie_recommendation_app_course/core/constants.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
@@ -19,11 +20,10 @@ class PrimaryButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: TextButton(
         style: TextButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(kBorderRadius / 2),
-          ),
-          fixedSize: Size(width, 48),
-        ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(kBorderRadius / 2),
+            ),
+            fixedSize: Size(width, 48)),
         onPressed: onPressed,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
