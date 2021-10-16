@@ -6,7 +6,9 @@ class MovieEntity {
   final String overview;
   final num voteAverage;
   final List<int> genreIds;
+  final int id;
   final String releaseDate;
+  final bool adult;
   final String? backdropPath;
   final String? posterPath;
 
@@ -15,7 +17,9 @@ class MovieEntity {
     required this.overview,
     required this.voteAverage,
     required this.genreIds,
+    required this.id,
     required this.releaseDate,
+    required this.adult,
     this.backdropPath,
     this.posterPath,
   });
@@ -26,7 +30,9 @@ class MovieEntity {
       overview: map['overview'],
       voteAverage: map['vote_average'],
       genreIds: List.from(map['genre_ids']),
+      id: map['id'],
       releaseDate: map['release_date'],
+      adult: map['adult'],
       backdropPath: map['backdrop_path'],
       posterPath: map['poster_path'],
     );
@@ -47,7 +53,9 @@ class MovieEntity {
         other.overview == overview &&
         other.voteAverage == voteAverage &&
         other.genreIds == genreIds &&
+        other.id == id &&
         other.releaseDate == releaseDate &&
+        other.adult == adult &&
         other.backdropPath == backdropPath &&
         other.backdropPath == backdropPath;
   }
@@ -58,6 +66,8 @@ class MovieEntity {
       overview.hashCode ^
       voteAverage.hashCode ^
       genreIds.hashCode ^
+      id.hashCode ^
+      adult.hashCode ^
       releaseDate.hashCode ^
       backdropPath.hashCode ^
       posterPath.hashCode;

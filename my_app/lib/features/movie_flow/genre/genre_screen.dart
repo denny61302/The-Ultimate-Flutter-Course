@@ -12,6 +12,8 @@ class GenreScreen extends ConsumerWidget {
     Key? key,
   }) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);

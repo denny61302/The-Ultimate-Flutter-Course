@@ -27,7 +27,10 @@ class LandingScreen extends ConsumerWidget {
             Image.asset('images/undraw_horror_movie.png'),
             const Spacer(),
             PrimaryButton(
-              onPressed: ref.read(movieFlowControllerProvider.notifier).nextPage,
+              onPressed: () {
+                ref.read(movieFlowControllerProvider.notifier).loadGenres();
+                ref.read(movieFlowControllerProvider.notifier).nextPage();
+              },
               text: 'Get Started',
             ),
             const SizedBox(height: kMediumSpacing),

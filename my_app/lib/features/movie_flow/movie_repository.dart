@@ -13,6 +13,7 @@ final movieRepositoryProvider = Provider<MovieRepository>((ref) {
 abstract class MovieRepository {
   Future<List<GenreEntity>> getMovieGenres();
   Future<List<MovieEntity>> getRecommendedMovies(double rating, String date, String genreIds);
+  Future<List<MovieEntity>> getSimilarMovies(MovieEntity movieEntity);
 }
 
 class TMDBMovieRepository implements MovieRepository {
@@ -48,6 +49,24 @@ class TMDBMovieRepository implements MovieRepository {
         'page': 1,
         'release_data.gte': date,
         'with_genres': genreIds,
+      },
+    );
+
+    final results = List<Map<String, dynamic>>.from(response.data['results']);
+    print(results);
+
+    final movies = results.map((e) => MovieEntity.fromMap(e)).toList();
+    return movies;
+  }
+
+  @override
+  Future<List<MovieEntity>> getSimilarMovies(MovieEntity movieEntity) async {
+    final response = await dio.get(
+      'movie/${movieEntity.id}/similar',
+      queryParameters: {
+        'api_key': api,
+        'language': 'én-US',
+        'page': 1,
       },
     );
 

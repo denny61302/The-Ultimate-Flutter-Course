@@ -24,12 +24,15 @@ class ResultScreen extends ConsumerWidget {
               body: Column(
                 children: [
                   Expanded(
+                    flex: 3,
                     child: ListView(
                       children: [
                         Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            CoverImage(movie: movie,),
+                            CoverImage(
+                              movie: movie,
+                            ),
                             Positioned(
                               width: MediaQuery.of(context).size.width,
                               bottom: -(movieHeight / 2),
@@ -49,6 +52,26 @@ class ResultScreen extends ConsumerWidget {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        children: [
+                          Text('Similar Movies', style: Theme.of(context).textTheme.headline6, ),
+
+                          Expanded(
+                            child: ListView.builder(
+                              itemBuilder: (context, index) {
+                                return Text(movie.similarMovies[index].title);
+                              },
+                              itemCount: movie.similarMovies.length,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   PrimaryButton(
@@ -164,10 +187,10 @@ class MovieImageDetails extends ConsumerWidget {
                       color: Colors.amber,
                     ),
                   ],
-                )
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
