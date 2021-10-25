@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:movie_recommendation_app_course/core/constants.dart';
+import 'package:movie_recommendation_app_course/core/faliure.dart';
+import 'package:movie_recommendation_app_course/core/widgets/failure_screen.dart';
 import 'package:movie_recommendation_app_course/core/widgets/primary_button.dart';
 import 'package:movie_recommendation_app_course/features/movie_flow/movie_flow_controller.dart';
 import 'package:movie_recommendation_app_course/features/movie_flow/result/movie.dart';
@@ -54,26 +56,6 @@ class ResultScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        children: [
-                          Text('Similar Movies', style: Theme.of(context).textTheme.headline6, ),
-
-                          Expanded(
-                            child: ListView.builder(
-                              itemBuilder: (context, index) {
-                                return Text(movie.similarMovies[index].title);
-                              },
-                              itemCount: movie.similarMovies.length,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                   PrimaryButton(
                     onPressed: () => Navigator.of(context).pop(),
                     text: 'Find another movie',
@@ -89,7 +71,11 @@ class ResultScreen extends ConsumerWidget {
             ),
           ),
           error: (e, s) {
-            return const Text('Something went wrong on our end');
+            if (e is Failure) {
+              return FailureScreen(message: e.message);
+            }
+            return const FailureScreen(
+                message: 'Something went wrong on our end');
           },
         );
   }

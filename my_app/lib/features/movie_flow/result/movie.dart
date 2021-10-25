@@ -9,7 +9,6 @@ class Movie {
   final String overview;
   final num voteAverage;
   final List<Genre> genres;
-  final List<Movie> similarMovies;
   final String releaseDate;
   final String? backdropPath;
   final String? posterPath;
@@ -19,14 +18,13 @@ class Movie {
     required this.overview,
     required this.voteAverage,
     required this.genres,
-    required this.similarMovies,
     required this.releaseDate,
     this.backdropPath,
     this.posterPath,
   });
 
   factory Movie.fromEntity(
-      MovieEntity entity, List<Genre> genres, List<Movie> similarMovies) {
+      MovieEntity entity, List<Genre> genres) {
     return Movie(
       title: entity.title,
       overview: entity.overview,
@@ -34,7 +32,6 @@ class Movie {
       genres: genres
           .where((genre) => entity.genreIds.contains(genre.id))
           .toList(growable: false),
-      similarMovies: similarMovies,
       releaseDate: entity.releaseDate,
       backdropPath:
           'https://image.tmdb.org/t/p/original/${entity.backdropPath}',
@@ -47,7 +44,6 @@ class Movie {
         overview = '',
         voteAverage = 0,
         genres = [],
-        similarMovies = [],
         releaseDate = '',
         backdropPath = '',
         posterPath = '';
@@ -69,7 +65,6 @@ class Movie {
         other.overview == overview &&
         other.voteAverage == voteAverage &&
         listEquals(other.genres, genres) &&
-        listEquals(other.similarMovies, similarMovies) &&
         other.releaseDate == releaseDate;
   }
 
@@ -79,7 +74,6 @@ class Movie {
         overview.hashCode ^
         voteAverage.hashCode ^
         genres.hashCode ^
-        similarMovies.hashCode ^
         releaseDate.hashCode;
   }
 }
